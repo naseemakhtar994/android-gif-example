@@ -15,8 +15,8 @@ buildscript {
     classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3"
     classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.8"
     classpath "com.github.ben-manes:gradle-versions-plugin:0.13.0"
-    classpath "me.tatarka:gradle-retrolambda:3.3.1"
     classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
+    classpath "com.google.guava:guava:19.0" // TODO http://b.android.com/214615 and http://b.android.com/213471
   }
 }
 
@@ -32,7 +32,6 @@ apply plugin: "android-command"
 apply plugin: "com.github.triplet.play"
 apply plugin: "com.getkeepsafe.dexcount"
 apply plugin: "com.vanniktech.android.apk.size"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: "net.ltgt.errorprone"
 apply plugin: "com.github.ben-manes.versions"
 apply from: rootProject.file("gradle/compile.gradle")
@@ -52,6 +51,11 @@ android {
 
     vectorDrawables {
       useSupportLibrary true
+    }
+
+    jackOptions {
+      enabled true
+      // additionalParameters("jack.incremental": true) // TODO http://b.android.com/224292
     }
   }
 
@@ -123,7 +127,7 @@ def espressoVersion = "2.2.2"
 def leakCanaryVersion = "1.5"
 def junitVersion = "4.12"
 def mockitoVersion = "2.2.9"
-def assertjCoreVersion = "2.5.0" // Java 8 - 3.5.2
+def assertjCoreVersion = "2.5.0"
 def dexMakerVersion = "1.2"
 
 dependencies {
@@ -174,6 +178,4 @@ dependencies {
   testCompile "org.khronos:opengl-api:gl1.1-android-2.1_r1"
   testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}"
   testCompile "nl.jqno.equalsverifier:equalsverifier:2.1.6"
-
-  retrolambdaConfig "net.orfjackal.retrolambda:retrolambda:2.3.0"
 }
